@@ -1,0 +1,33 @@
+name: Scrape Naver Blog Posts
+
+on:
+  schedule:
+    - cron: '0 1 * * *'  # 매일 오전 10시(KST)에 실행 (UTC 기준 1시)
+  workflow_dispatch:     # 수동 실행 버튼도 추가
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run scraper
+      run: python scraper2.py
+
+    - name: Commit and push updated JSON
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git add all_blog_posts.json
+        git commit -m "Auto-update blog posts JSON"
+        git push
