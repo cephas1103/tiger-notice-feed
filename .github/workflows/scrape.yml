@@ -1,3 +1,4 @@
+# Force trigger GitHub Actions
 name: Scrape Naver Blog Posts
 
 on:
